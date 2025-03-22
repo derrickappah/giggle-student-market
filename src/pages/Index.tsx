@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import CategoryTabs from '@/components/CategoryTabs';
 import FeaturedFreelancers from '@/components/FeaturedFreelancers';
 import ServiceCard, { ServiceCardProps } from '@/components/ServiceCard';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react'; // Added Star import
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 
