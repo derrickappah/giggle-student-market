@@ -46,28 +46,28 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4">For Students</h4>
               <ul className="space-y-2 text-foreground/70">
-                <li><Link to="/services" className="hover:text-primary transition-colors">Find Work</Link></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Create Profile</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Resources</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Success Stories</a></li>
+                <li><Link to="/students/find-work" className="hover:text-primary transition-colors">Find Work</Link></li>
+                <li><Link to="/students/create-profile" className="hover:text-primary transition-colors">Create Profile</Link></li>
+                <li><Link to="/students/resources" className="hover:text-primary transition-colors">Resources</Link></li>
+                <li><Link to="/students/success-stories" className="hover:text-primary transition-colors">Success Stories</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Clients</h4>
               <ul className="space-y-2 text-foreground/70">
-                <li><a href="#" className="hover:text-primary transition-colors">Post a Project</a></li>
-                <li><Link to="/freelancers" className="hover:text-primary transition-colors">Find Talent</Link></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Enterprise</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Success Stories</a></li>
+                <li><Link to="/clients/post-project" className="hover:text-primary transition-colors">Post a Project</Link></li>
+                <li><Link to="/clients/find-talent" className="hover:text-primary transition-colors">Find Talent</Link></li>
+                <li><Link to="/clients/enterprise" className="hover:text-primary transition-colors">Enterprise</Link></li>
+                <li><Link to="/clients/success-stories" className="hover:text-primary transition-colors">Success Stories</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-foreground/70">
                 <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+                <li><Link to="/company/careers" className="hover:text-primary transition-colors">Careers</Link></li>
+                <li><Link to="/company/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+                <li><Link to="/company/contact" className="hover:text-primary transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>
