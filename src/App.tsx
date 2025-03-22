@@ -13,6 +13,8 @@ import FreelancerProfile from "./pages/FreelancerProfile";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => {
               <Route path="/freelancers" element={<Freelancers />} />
               <Route path="/freelancers/:id" element={<FreelancerProfile />} />
               <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

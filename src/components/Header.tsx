@@ -50,12 +50,16 @@ const Header = () => {
           
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="outline" size="sm">
-              Log In
-            </Button>
-            <Button size="sm">
-              Sign Up
-            </Button>
+            <Link to="/login">
+              <Button variant="outline" size="sm">
+                Log In
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button size="sm">
+                Sign Up
+              </Button>
+            </Link>
           </div>
           
           {/* Mobile Menu Button */}
@@ -109,12 +113,16 @@ const Header = () => {
                 About
               </Link>
               <div className="pt-2 flex flex-col space-y-2">
-                <Button variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
-                  Log In
-                </Button>
-                <Button className="w-full" onClick={() => setIsOpen(false)}>
-                  Sign Up
-                </Button>
+                <Link to="/login" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    Log In
+                  </Button>
+                </Link>
+                <Link to="/signup" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full">
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             </nav>
           </motion.div>
