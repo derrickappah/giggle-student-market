@@ -44,39 +44,43 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              
-              {/* Main navigation routes */}
-              <Route path="/services" element={<Services />} />
-              <Route path="/services/:id" element={<ServiceDetail />} />
-              <Route path="/freelancers" element={<Freelancers />} />
-              <Route path="/freelancers/:id" element={<FreelancerProfile />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              
-              {/* Student section routes */}
-              <Route path="/students/find-work" element={<FindWork />} />
-              <Route path="/students/create-profile" element={<CreateProfile />} />
-              <Route path="/students/resources" element={<Resources />} />
-              <Route path="/students/success-stories" element={<SuccessStories />} />
-              
-              {/* Client section routes */}
-              <Route path="/clients/post-project" element={<PostProject />} />
-              <Route path="/clients/find-talent" element={<FindTalent />} />
-              <Route path="/clients/enterprise" element={<Enterprise />} />
-              <Route path="/clients/success-stories" element={<ClientSuccessStories />} />
-              
-              {/* Company section routes */}
-              <Route path="/company/careers" element={<Careers />} />
-              <Route path="/company/blog" element={<Blog />} />
-              <Route path="/company/contact" element={<Contact />} />
-              
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
+            <div className="flex flex-col min-h-screen">
+              <div className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  
+                  {/* Main navigation routes */}
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/services/:id" element={<ServiceDetail />} />
+                  <Route path="/freelancers" element={<Freelancers />} />
+                  <Route path="/freelancers/:id" element={<FreelancerProfile />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  
+                  {/* Student section routes */}
+                  <Route path="/students/find-work" element={<FindWork />} />
+                  <Route path="/students/create-profile" element={<CreateProfile />} />
+                  <Route path="/students/resources" element={<Resources />} />
+                  <Route path="/students/success-stories" element={<SuccessStories />} />
+                  
+                  {/* Client section routes */}
+                  <Route path="/clients/post-project" element={<PostProject />} />
+                  <Route path="/clients/find-talent" element={<FindTalent />} />
+                  <Route path="/clients/enterprise" element={<Enterprise />} />
+                  <Route path="/clients/success-stories" element={<ClientSuccessStories />} />
+                  
+                  {/* Company section routes */}
+                  <Route path="/company/careers" element={<Careers />} />
+                  <Route path="/company/blog" element={<Blog />} />
+                  <Route path="/company/contact" element={<Contact />} />
+                  
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <Footer />
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

@@ -12,7 +12,7 @@ const PageLayout = ({ title, description, children }: PageLayoutProps) => {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-80px)] bg-background">
+      <main className="min-h-[calc(100vh-80px-300px)] bg-background">
         <div className="container mx-auto px-4 py-16">
           <div className="mb-10 text-center">
             <h1 className="text-4xl font-bold mb-4">{title}</h1>
