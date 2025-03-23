@@ -67,9 +67,9 @@ const Footer = () => {
             © {new Date().getFullYear()} UniTalent. All rights reserved.
           </p>
           <div className="flex space-x-6 text-sm text-foreground/60">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
+            <Link to="/legal/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/legal/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <Link to="/legal/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>

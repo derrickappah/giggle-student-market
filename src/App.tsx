@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { StrictMode } from "react";
+
+// Main pages
 import Index from "./pages/Index";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -32,6 +34,11 @@ import ClientSuccessStories from "./pages/clients/ClientSuccessStories";
 import Careers from "./pages/company/Careers";
 import Blog from "./pages/company/Blog";
 import Contact from "./pages/company/Contact";
+
+// Legal pages
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import CookiePolicy from "./pages/legal/CookiePolicy";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -74,6 +81,11 @@ const App = () => {
                   <Route path="/company/careers" element={<Careers />} />
                   <Route path="/company/blog" element={<Blog />} />
                   <Route path="/company/contact" element={<Contact />} />
+                  
+                  {/* Legal pages */}
+                  <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/legal/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/legal/cookie-policy" element={<CookiePolicy />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
