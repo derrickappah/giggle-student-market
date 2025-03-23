@@ -25,6 +25,7 @@ import Messages from "./pages/dashboard/Messages";
 import DashboardCalendar from "./pages/dashboard/Calendar";
 import Profile from "./pages/dashboard/Profile";
 import Settings from "./pages/dashboard/Settings";
+import ClientDashboard from "./pages/dashboard/ClientDashboard";
 
 // Student pages
 import FindWork from "./pages/students/FindWork";
@@ -80,6 +81,7 @@ const App = () => {
                   <Route path="/dashboard/calendar" element={<DashboardCalendar />} />
                   <Route path="/dashboard/profile" element={<Profile />} />
                   <Route path="/dashboard/settings" element={<Settings />} />
+                  <Route path="/dashboard/client" element={<ClientDashboard />} />
                   
                   {/* Student section routes */}
                   <Route path="/students/find-work" element={<FindWork />} />

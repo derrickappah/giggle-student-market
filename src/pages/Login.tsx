@@ -17,11 +17,19 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 // Form schema for validation
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  userType: z.enum(["student", "client"]).default("student")
 });
 
 const Login = () => {
@@ -33,6 +41,7 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
+      userType: "student"
     },
   });
 
@@ -48,7 +57,12 @@ const Login = () => {
         description: "You have successfully logged in",
       });
       
-      navigate("/dashboard"); // Redirect to dashboard after login
+      // Redirect based on user type
+      if (values.userType === "client") {
+        navigate("/dashboard/client");
+      } else {
+        navigate("/dashboard"); // Default student dashboard
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -82,6 +96,31 @@ const Login = () => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+              <FormField
+                control={form.control}
+                name="userType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>I am a</FormLabel>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select account type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="student">Student/Freelancer</SelectItem>
+                        <SelectItem value="client">Client/Employer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="email"
