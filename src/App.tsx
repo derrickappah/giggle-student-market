@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard"; // Import the new Dashboard page
 
 // Student pages
 import FindWork from "./pages/students/FindWork";
@@ -64,6 +65,7 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   
                   {/* Student section routes */}
                   <Route path="/students/find-work" element={<FindWork />} />
