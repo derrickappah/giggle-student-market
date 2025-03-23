@@ -17,7 +17,14 @@ import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard"; // Import the new Dashboard page
+import Dashboard from "./pages/Dashboard";
+
+// Dashboard pages
+import Projects from "./pages/dashboard/Projects";
+import Messages from "./pages/dashboard/Messages";
+import DashboardCalendar from "./pages/dashboard/Calendar";
+import Profile from "./pages/dashboard/Profile";
+import Settings from "./pages/dashboard/Settings";
 
 // Student pages
 import FindWork from "./pages/students/FindWork";
@@ -66,6 +73,13 @@ const App = () => {
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/dashboard" element={<Dashboard />} />
+                  
+                  {/* Dashboard section routes */}
+                  <Route path="/dashboard/projects" element={<Projects />} />
+                  <Route path="/dashboard/messages" element={<Messages />} />
+                  <Route path="/dashboard/calendar" element={<DashboardCalendar />} />
+                  <Route path="/dashboard/profile" element={<Profile />} />
+                  <Route path="/dashboard/settings" element={<Settings />} />
                   
                   {/* Student section routes */}
                   <Route path="/students/find-work" element={<FindWork />} />
