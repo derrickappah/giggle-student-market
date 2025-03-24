@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ProjectDetail from "./pages/ProjectDetail";
 
 // Student/Freelancer Dashboard
 import Dashboard from "./pages/Dashboard";
@@ -78,6 +79,9 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    
+                    {/* Projects routes */}
+                    <Route path="/projects/:id" element={<ProjectDetail />} />
                     
                     {/* Student/Freelancer Dashboard Routes - Protected */}
                     <Route element={<ProtectedRoute userType="student" />}>

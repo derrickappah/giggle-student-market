@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,6 +25,8 @@ import {
 import { toast } from "@/hooks/use-toast";
 import PageLayout from '@/components/PageLayout';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 
 const projectFormSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -41,6 +43,8 @@ const projectFormSchema = z.object({
 
 const PostProject = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<z.infer<typeof projectFormSchema>>({
     resolver: zodResolver(projectFormSchema),
@@ -54,24 +58,57 @@ const PostProject = () => {
 
   const onSubmit = async (values: z.infer<typeof projectFormSchema>) => {
     try {
-      // In a real app, this would submit to your backend
-      console.log("Project data:", values);
+      if (!user) {
+        toast({
+          variant: "destructive",
+          title: "Authentication required",
+          description: "You must be logged in to post a project."
+        });
+        return;
+      }
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsSubmitting(true);
+      
+      // Convert skills string to array
+      const skillsArray = values.skills
+        .split(',')
+        .map(skill => skill.trim())
+        .filter(skill => skill.length > 0);
+      
+      // Insert project data into Supabase
+      const { data, error } = await supabase
+        .from('project_listings')
+        .insert({
+          client_id: user.id,
+          title: values.title,
+          description: values.description,
+          category: values.category,
+          skills: skillsArray,
+          budget: parseFloat(values.budget),
+          duration: values.duration,
+          status: 'open'
+        })
+        .select();
+      
+      if (error) {
+        throw error;
+      }
       
       toast({
         title: "Project posted!",
         description: "Your project has been submitted successfully."
       });
       
-      navigate("/services");
+      navigate("/client/projects");
     } catch (error) {
+      console.error("Error posting project:", error);
       toast({
         variant: "destructive",
         title: "Something went wrong",
         description: "Your project could not be posted. Please try again."
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -207,8 +244,8 @@ const PostProject = () => {
               />
             </div>
             
-            <Button type="submit" className="w-full">
-              Post Project
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Posting..." : "Post Project"}
             </Button>
           </form>
         </Form>
