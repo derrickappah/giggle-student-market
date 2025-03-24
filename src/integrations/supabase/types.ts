@@ -45,6 +45,48 @@ export type Database = {
         }
         Relationships: []
       }
+      project_listings: {
+        Row: {
+          budget: number
+          category: string
+          client_id: string
+          created_at: string
+          description: string
+          duration: string
+          id: string
+          skills: string[]
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget: number
+          category: string
+          client_id: string
+          created_at?: string
+          description: string
+          duration: string
+          id?: string
+          skills: string[]
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: number
+          category?: string
+          client_id?: string
+          created_at?: string
+          description?: string
+          duration?: string
+          id?: string
+          skills?: string[]
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

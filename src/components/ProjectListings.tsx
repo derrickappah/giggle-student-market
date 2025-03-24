@@ -31,22 +31,24 @@ const ProjectListings = ({
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        let query = supabase
+        
+        // Using any to bypass TypeScript limitations with Supabase
+        const query = supabase
           .from('project_listings')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(limit);
         
         if (clientId) {
-          query = query.eq('client_id', clientId);
+          query.eq('client_id', clientId);
         }
         
         if (category) {
-          query = query.eq('category', category);
+          query.eq('category', category);
         }
         
         if (status) {
-          query = query.eq('status', status);
+          query.eq('status', status);
         }
         
         const { data, error } = await query;

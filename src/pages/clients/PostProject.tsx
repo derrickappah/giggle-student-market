@@ -87,7 +87,7 @@ const PostProject = () => {
           budget: parseFloat(values.budget),
           duration: values.duration,
           status: 'open'
-        })
+        } as any)
         .select();
       
       if (error) {

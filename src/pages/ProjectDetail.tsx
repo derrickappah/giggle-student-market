@@ -43,16 +43,18 @@ const ProjectDetail = () => {
         setProject(projectData as ProjectListing);
         
         // Fetch client profile
-        const { data: clientData, error: clientError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', projectData.client_id)
-          .single();
-        
-        if (clientError) {
-          console.error('Error fetching client profile:', clientError);
-        } else {
-          setClientProfile(clientData);
+        if (projectData) {
+          const { data: clientData, error: clientError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', projectData.client_id)
+            .single();
+          
+          if (clientError) {
+            console.error('Error fetching client profile:', clientError);
+          } else {
+            setClientProfile(clientData);
+          }
         }
         
       } catch (err) {
