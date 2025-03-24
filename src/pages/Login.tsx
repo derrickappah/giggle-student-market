@@ -24,6 +24,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { useAuth } from "@/context/AuthContext";
 
 // Form schema for validation
 const formSchema = z.object({
@@ -35,6 +36,13 @@ const formSchema = z.object({
 const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { signIn, user } = useAuth();
+
+  // Redirect if already logged in
+  if (user) {
+    navigate("/student");
+    return null;
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,9 +56,17 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      // Simulate login - In a real application, this would call your auth service
-      console.log("Login attempt with:", values);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const { error } = await signIn(values.email, values.password);
+      
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: error.message || "Please check your credentials and try again",
+        });
+        setIsLoading(false);
+        return;
+      }
       
       toast({
         title: "Success!",
@@ -63,11 +79,11 @@ const Login = () => {
       } else {
         navigate("/student");
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: "Please check your credentials and try again",
+        description: error.message || "An unexpected error occurred",
       });
     } finally {
       setIsLoading(false);

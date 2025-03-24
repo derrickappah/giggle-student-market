@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Briefcase, FileText, Calendar, User, Settings } from "lucide-react";
 import Header from "./Header";
+import { useAuth } from "@/context/AuthContext";
 
 interface DashboardLayoutProps {
   title: string;
@@ -19,7 +20,9 @@ const DashboardLayout = ({
   userType = "student" 
 }: DashboardLayoutProps) => {
   const location = useLocation();
-  const basePath = userType === "client" ? "/client" : "/student";
+  const { profile } = useAuth();
+  const actualUserType = profile?.user_type || userType;
+  const basePath = actualUserType === "client" ? "/client" : "/student";
   
   const navItems = [
     { path: `${basePath}`, icon: <BarChart3 className="h-5 w-5" />, label: "Overview" },

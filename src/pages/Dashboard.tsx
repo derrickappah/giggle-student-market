@@ -1,14 +1,15 @@
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bell, Briefcase, FileText, Calendar, BarChart3, Settings, User } from "lucide-react";
+import { Bell, Briefcase, Calendar, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
+import { useAuth } from "@/context/AuthContext";
 
 const Dashboard = () => {
-  const [username] = useState("Student"); // This would come from auth context in a real app
+  const { profile } = useAuth();
+  const firstName = profile?.first_name || "Student";
 
   // Sample upcoming projects
   const upcomingProjects = [
@@ -26,9 +27,9 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout 
-      title={`Welcome, ${username}`} 
+      title={`Welcome, ${firstName}`} 
       description="Manage your freelance projects and activity"
-      userType="student"
+      userType={profile?.user_type}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Stats summary */}
@@ -84,7 +85,7 @@ const Dashboard = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Link to="/student/projects">
+              <Link to={profile?.user_type === "client" ? "/client/projects" : "/student/projects"}>
                 <Button variant="outline">View All Projects</Button>
               </Link>
             </CardFooter>

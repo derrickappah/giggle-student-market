@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import PageLayout from '@/components/PageLayout';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const profileFormSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -30,41 +32,96 @@ const profileFormSchema = z.object({
 
 const CreateProfile = () => {
   const navigate = useNavigate();
+  const { user, profile } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // If profile already exists, redirect to dashboard
+  useEffect(() => {
+    if (profile && profile.bio) {
+      navigate('/student');
+    }
+  }, [profile, navigate]);
   
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      fullName: "",
-      university: "",
+      fullName: profile?.first_name || "",
+      university: profile?.university || "",
       course: "",
       skills: "",
-      bio: "",
+      bio: profile?.bio || "",
       hourlyRate: ""
     }
   });
 
   const onSubmit = async (values: z.infer<typeof profileFormSchema>) => {
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Authentication required",
+        description: "You must be logged in to create a profile."
+      });
+      navigate('/login');
+      return;
+    }
+    
+    setIsLoading(true);
     try {
-      // In a real app, this would submit to your backend
-      console.log("Profile data:", values);
+      // Split the full name into first and last name
+      const nameParts = values.fullName.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Update the profile in Supabase
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          first_name: firstName,
+          last_name: lastName,
+          university: values.university,
+          bio: values.bio,
+          // Store additional fields as JSON in the bio field
+          user_details: {
+            course: values.course,
+            skills: values.skills.split(',').map(skill => skill.trim()),
+            hourlyRate: values.hourlyRate
+          }
+        })
+        .eq('id', user.id);
+      
+      if (error) throw error;
       
       toast({
         title: "Profile created!",
         description: "Your profile has been created successfully."
       });
       
-      navigate("/students/resources");
-    } catch (error) {
+      navigate("/student");
+    } catch (error: any) {
+      console.error("Error saving profile:", error);
       toast({
         variant: "destructive",
         title: "Something went wrong",
-        description: "Your profile could not be created. Please try again."
+        description: error.message || "Your profile could not be created. Please try again."
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (!user) {
+    return (
+      <PageLayout 
+        title="Sign In Required" 
+        description="You need to sign in to create a profile"
+      >
+        <div className="max-w-2xl mx-auto bg-card p-8 rounded-lg shadow-sm border">
+          <p className="mb-6">Please sign in or create an account to continue.</p>
+          <Button onClick={() => navigate('/login')}>Sign In</Button>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout 
@@ -170,8 +227,8 @@ const CreateProfile = () => {
               )}
             />
             
-            <Button type="submit" className="w-full">
-              Create Profile
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Creating Profile..." : "Create Profile"}
             </Button>
           </form>
         </Form>

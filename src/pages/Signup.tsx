@@ -17,6 +17,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
+import { useAuth } from "@/context/AuthContext";
 
 const formSchema = z
   .object({
@@ -25,6 +26,7 @@ const formSchema = z
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
     university: z.string().min(2, "University name is required"),
+    userType: z.enum(["student", "client"]).default("student"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -34,6 +36,13 @@ const formSchema = z
 const Signup = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { signUp, user } = useAuth();
+
+  // Redirect if already logged in
+  if (user) {
+    navigate("/student");
+    return null;
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,27 +52,40 @@ const Signup = () => {
       password: "",
       confirmPassword: "",
       university: "",
+      userType: "student",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      // Simulate API call - In a real app, this would call your auth service
-      console.log("Signup with:", values);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const { error } = await signUp(values.email, values.password, {
+        name: values.name,
+        university: values.university,
+        userType: values.userType,
+      });
+      
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Signup failed",
+          description: error.message || "An error occurred during signup. Please try again.",
+        });
+        setIsLoading(false);
+        return;
+      }
       
       toast({
         title: "Account created!",
-        description: "Your account has been created successfully",
+        description: "Your account has been created successfully. Please check your email for verification.",
       });
       
-      navigate("/login"); // Redirect to login after signup
-    } catch (error) {
+      navigate("/login");
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Signup failed",
-        description: "An error occurred during signup. Please try again.",
+        description: error.message || "An unexpected error occurred",
       });
     } finally {
       setIsLoading(false);
@@ -93,6 +115,26 @@ const Signup = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
               <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="userType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>I am a</FormLabel>
+                      <FormControl>
+                        <select
+                          className="w-full rounded-md border border-gray-300 p-2"
+                          {...field}
+                        >
+                          <option value="student">Student/Freelancer</option>
+                          <option value="client">Client/Employer</option>
+                        </select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="name"
