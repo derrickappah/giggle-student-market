@@ -1,39 +1,34 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
-
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
-      
-      const { clientX, clientY } = e;
-      const { left, top, width, height } = heroRef.current.getBoundingClientRect();
-      
+      const {
+        clientX,
+        clientY
+      } = e;
+      const {
+        left,
+        top,
+        width,
+        height
+      } = heroRef.current.getBoundingClientRect();
       const x = (clientX - left) / width;
       const y = (clientY - top) / height;
-      
       heroRef.current.style.setProperty('--mouse-x', `${x}`);
       heroRef.current.style.setProperty('--mouse-y', `${y}`);
     };
-    
     document.addEventListener('mousemove', handleMouseMove);
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
-
-  return (
-    <div 
-      ref={heroRef}
-      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20"
-      style={{
-        background: 'radial-gradient(circle at calc(var(--mouse-x, 0.5) * 100%) calc(var(--mouse-y, 0.5) * 100%), rgba(37, 99, 235, 0.1), transparent 40%)'
-      }}
-    >
+  return <div ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20" style={{
+    background: 'radial-gradient(circle at calc(var(--mouse-x, 0.5) * 100%) calc(var(--mouse-y, 0.5) * 100%), rgba(37, 99, 235, 0.1), transparent 40%)'
+  }}>
       {/* Decorative Elements */}
       <div className="absolute top-20 -right-20 w-80 h-80 bg-primary/10 rounded-full filter blur-3xl opacity-70 animate-floating"></div>
       <div className="absolute -bottom-40 -left-20 w-80 h-80 bg-accent/30 rounded-full filter blur-3xl opacity-70 animate-floating animation-delay-300"></div>
@@ -41,7 +36,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block mb-6 animate-fade-up">
-            <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm">
+            <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-lg">
               For university students
             </span>
           </div>
@@ -97,8 +92,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Hero;
