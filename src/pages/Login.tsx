@@ -59,9 +59,9 @@ const Login = () => {
       
       // Redirect based on user type
       if (values.userType === "client") {
-        navigate("/dashboard/client");
+        navigate("/client");
       } else {
-        navigate("/dashboard"); // Default student dashboard
+        navigate("/student");
       }
     } catch (error) {
       toast({

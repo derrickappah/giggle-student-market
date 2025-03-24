@@ -67,6 +67,7 @@ const ClientDashboard = () => {
     <DashboardLayout 
       title="Client Dashboard" 
       description="Manage your projects and find university talent"
+      userType="client"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content area - 2/3 width on large screens */}
@@ -227,7 +228,7 @@ const ClientDashboard = () => {
                     <Search className="mr-2 h-4 w-4" /> Find Talent
                   </Button>
                 </Link>
-                <Link to="/dashboard/messages">
+                <Link to="/client/messages">
                   <Button className="w-full justify-start" variant="outline">
                     <FileText className="mr-2 h-4 w-4" /> Messages
                   </Button>

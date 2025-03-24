@@ -9,18 +9,25 @@ interface DashboardLayoutProps {
   title: string;
   description?: string;
   children: ReactNode;
+  userType?: "student" | "client";
 }
 
-const DashboardLayout = ({ title, description, children }: DashboardLayoutProps) => {
+const DashboardLayout = ({ 
+  title, 
+  description, 
+  children, 
+  userType = "student" 
+}: DashboardLayoutProps) => {
   const location = useLocation();
+  const basePath = userType === "client" ? "/client" : "/student";
   
   const navItems = [
-    { path: "/dashboard", icon: <BarChart3 className="h-5 w-5" />, label: "Overview" },
-    { path: "/dashboard/projects", icon: <Briefcase className="h-5 w-5" />, label: "My Projects" },
-    { path: "/dashboard/messages", icon: <FileText className="h-5 w-5" />, label: "Messages" },
-    { path: "/dashboard/calendar", icon: <Calendar className="h-5 w-5" />, label: "Calendar" },
-    { path: "/dashboard/profile", icon: <User className="h-5 w-5" />, label: "Profile" },
-    { path: "/dashboard/settings", icon: <Settings className="h-5 w-5" />, label: "Settings" },
+    { path: `${basePath}`, icon: <BarChart3 className="h-5 w-5" />, label: "Overview" },
+    { path: `${basePath}/projects`, icon: <Briefcase className="h-5 w-5" />, label: "My Projects" },
+    { path: `${basePath}/messages`, icon: <FileText className="h-5 w-5" />, label: "Messages" },
+    { path: `${basePath}/calendar`, icon: <Calendar className="h-5 w-5" />, label: "Calendar" },
+    { path: `${basePath}/profile`, icon: <User className="h-5 w-5" />, label: "Profile" },
+    { path: `${basePath}/settings`, icon: <Settings className="h-5 w-5" />, label: "Settings" },
   ];
 
   return (

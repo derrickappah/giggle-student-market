@@ -17,14 +17,16 @@ import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
 
-// Dashboard pages
+// Student/Freelancer Dashboard
+import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/dashboard/Projects";
 import Messages from "./pages/dashboard/Messages";
 import DashboardCalendar from "./pages/dashboard/Calendar";
 import Profile from "./pages/dashboard/Profile";
 import Settings from "./pages/dashboard/Settings";
+
+// Client Dashboard
 import ClientDashboard from "./pages/dashboard/ClientDashboard";
 
 // Student pages
@@ -75,15 +77,35 @@ const App = () => {
                   <Route path="/signup" element={<Signup />} />
                   
                   {/* Student/Freelancer Dashboard Routes */}
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/dashboard/projects" element={<Projects />} />
-                  <Route path="/dashboard/messages" element={<Messages />} />
-                  <Route path="/dashboard/calendar" element={<DashboardCalendar />} />
-                  <Route path="/dashboard/profile" element={<Profile />} />
-                  <Route path="/dashboard/settings" element={<Settings />} />
+                  <Route path="/student">
+                    <Route index element={<Dashboard />} />
+                    <Route path="projects" element={<Projects />} />
+                    <Route path="messages" element={<Messages />} />
+                    <Route path="calendar" element={<DashboardCalendar />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
                   
-                  {/* Client Dashboard Routes - Separate path */}
-                  <Route path="/dashboard/client" element={<ClientDashboard />} />
+                  {/* Legacy route redirects */}
+                  <Route path="/dashboard" element={<Navigate to="/student" replace />} />
+                  <Route path="/dashboard/projects" element={<Navigate to="/student/projects" replace />} />
+                  <Route path="/dashboard/messages" element={<Navigate to="/student/messages" replace />} />
+                  <Route path="/dashboard/calendar" element={<Navigate to="/student/calendar" replace />} />
+                  <Route path="/dashboard/profile" element={<Navigate to="/student/profile" replace />} />
+                  <Route path="/dashboard/settings" element={<Navigate to="/student/settings" replace />} />
+                  
+                  {/* Client Dashboard Routes */}
+                  <Route path="/client">
+                    <Route index element={<ClientDashboard />} />
+                    <Route path="projects" element={<Projects />} />
+                    <Route path="messages" element={<Messages />} />
+                    <Route path="calendar" element={<DashboardCalendar />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
+                  
+                  {/* Legacy client dashboard redirect */}
+                  <Route path="/dashboard/client" element={<Navigate to="/client" replace />} />
                   
                   {/* Student section routes */}
                   <Route path="/students/find-work" element={<FindWork />} />
