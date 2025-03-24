@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { StrictMode } from "react";
 
 // Main pages
@@ -73,14 +73,16 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
                   
-                  {/* Dashboard section routes */}
+                  {/* Student/Freelancer Dashboard Routes */}
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/dashboard/projects" element={<Projects />} />
                   <Route path="/dashboard/messages" element={<Messages />} />
                   <Route path="/dashboard/calendar" element={<DashboardCalendar />} />
                   <Route path="/dashboard/profile" element={<Profile />} />
                   <Route path="/dashboard/settings" element={<Settings />} />
+                  
+                  {/* Client Dashboard Routes - Separate path */}
                   <Route path="/dashboard/client" element={<ClientDashboard />} />
                   
                   {/* Student section routes */}
