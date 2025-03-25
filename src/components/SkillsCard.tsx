@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 interface SkillsCardProps {
   skills: string[];
@@ -26,7 +27,7 @@ const SkillsCard = ({ skills, title, className = '' }: SkillsCardProps) => {
   };
 
   return (
-    <div className={`bg-card text-card-foreground p-5 rounded-lg border transition-colors ${className}`}>
+    <Card className={`p-5 ${className}`}>
       <h3 className="text-lg font-medium mb-3">{title}</h3>
       <motion.div 
         className="flex flex-wrap gap-2"
@@ -35,15 +36,19 @@ const SkillsCard = ({ skills, title, className = '' }: SkillsCardProps) => {
         whileInView="show"
         viewport={{ once: true }}
       >
-        {skills.map((skill, index) => (
-          <motion.div key={index} variants={item}>
-            <Badge variant="secondary" className="text-xs dark:bg-secondary/80">
-              {skill}
-            </Badge>
-          </motion.div>
-        ))}
+        {skills.length > 0 ? (
+          skills.map((skill, index) => (
+            <motion.div key={index} variants={item}>
+              <Badge variant="secondary" className="text-xs dark:bg-secondary/80">
+                {skill}
+              </Badge>
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground">No skills added yet</p>
+        )}
       </motion.div>
-    </div>
+    </Card>
   );
 };
 

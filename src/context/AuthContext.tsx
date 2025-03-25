@@ -20,6 +20,10 @@ type AuthContextType = {
   signOut: () => Promise<void>;
   isStudent: () => boolean;
   isClient: () => boolean;
+  updateProfile: (profileData: any) => Promise<{
+    error: any | null;
+    data: any | null;
+  }>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -125,6 +129,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateProfile = async (profileData: any) => {
+    if (!user) {
+      return { 
+        error: { message: "User not authenticated" },
+        data: null
+      };
+    }
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(profileData)
+        .eq('id', user.id);
+      
+      if (!error) {
+        // Update the local profile state with the new data
+        setProfile(prevProfile => ({ ...prevProfile, ...profileData }));
+      }
+      
+      return { data, error };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return { data: null, error };
+    }
+  };
+
   const isStudent = () => {
     return profile?.user_type === 'student';
   };
@@ -144,7 +174,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signUp,
         signOut,
         isStudent,
-        isClient
+        isClient,
+        updateProfile
       }}
     >
       {children}

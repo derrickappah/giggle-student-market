@@ -19,7 +19,8 @@ import {
 import PageLayout from '@/components/PageLayout';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+import { Check, Loader2 } from 'lucide-react';
+import SkillsCard from '@/components/SkillsCard';
 
 const profileFormSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,8 +33,9 @@ const profileFormSchema = z.object({
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { user, profile } = useAuth();
+  const { user, profile, updateProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [previewSkills, setPreviewSkills] = useState<string[]>([]);
   
   // If profile already exists, redirect to dashboard
   useEffect(() => {
@@ -54,6 +56,22 @@ const CreateProfile = () => {
     }
   });
 
+  // Update preview skills when the skills field changes
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'skills' && value.skills) {
+        setPreviewSkills(
+          value.skills.toString()
+            .split(',')
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0)
+        );
+      }
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form.watch]);
+
   const onSubmit = async (values: z.infer<typeof profileFormSchema>) => {
     if (!user) {
       toast({
@@ -72,22 +90,24 @@ const CreateProfile = () => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
       
-      // Update the profile in Supabase
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          first_name: firstName,
-          last_name: lastName,
-          university: values.university,
-          bio: values.bio,
-          // Store additional fields as JSON in the bio field
-          user_details: {
-            course: values.course,
-            skills: values.skills.split(',').map(skill => skill.trim()),
-            hourlyRate: values.hourlyRate
-          }
-        })
-        .eq('id', user.id);
+      // Format skills as an array
+      const skillsArray = values.skills.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+      
+      // Create user details object
+      const userDetails = {
+        course: values.course,
+        skills: skillsArray,
+        hourlyRate: values.hourlyRate
+      };
+      
+      // Update the profile in Supabase using the updateProfile function from AuthContext
+      const { error } = await updateProfile({
+        first_name: firstName,
+        last_name: lastName,
+        university: values.university,
+        bio: values.bio,
+        user_details: userDetails
+      });
       
       if (error) throw error;
       
@@ -192,6 +212,16 @@ const CreateProfile = () => {
               )}
             />
             
+            {previewSkills.length > 0 && (
+              <div className="mt-2">
+                <SkillsCard 
+                  title="Skills Preview" 
+                  skills={previewSkills} 
+                  className="bg-muted/50 border-dashed"
+                />
+              </div>
+            )}
+            
             <FormField
               control={form.control}
               name="bio"
@@ -228,7 +258,17 @@ const CreateProfile = () => {
             />
             
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating Profile..." : "Create Profile"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Profile...
+                </>
+              ) : (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Create Profile
+                </>
+              )}
             </Button>
           </form>
         </Form>
