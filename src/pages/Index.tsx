@@ -1,13 +1,17 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowRight, Star } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import CategoryTabs from '@/components/CategoryTabs';
+import SearchProjects from '@/components/SearchProjects';
+import TrendingProjects from '@/components/TrendingProjects';
 import FeaturedFreelancers from '@/components/FeaturedFreelancers';
 import ServiceCard, { ServiceCardProps } from '@/components/ServiceCard';
-import { ArrowRight, Star } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { motion } from 'framer-motion';
 
 // Sample data for services
 const services: ServiceCardProps[] = [
@@ -109,8 +113,14 @@ const Index = () => {
       <Header />
       <Hero />
       
+      {/* Search Projects Section */}
+      <SearchProjects />
+      
+      {/* Trending Projects Section */}
+      <TrendingProjects />
+      
       {/* Popular Services Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-secondary/10">
         <div className="container mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -145,13 +155,15 @@ const Index = () => {
           
           {/* View All Button */}
           <div className="flex justify-center mt-12">
-            <Button 
-              variant="outline" 
-              className="rounded-full"
-            >
-              View All Services
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/services">
+              <Button 
+                variant="outline" 
+                className="rounded-full"
+              >
+                View All Services
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -258,9 +270,11 @@ const Index = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <Button className="btn-primary">
-                    Create Your Profile
-                  </Button>
+                  <Link to="/students/create-profile">
+                    <Button className="btn-primary">
+                      Create Your Profile
+                    </Button>
+                  </Link>
                 </motion.div>
               </div>
               
@@ -299,8 +313,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
-      {/* Removed the duplicate footer */}
     </div>
   );
 };
