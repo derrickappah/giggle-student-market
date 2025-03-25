@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { StrictMode } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 // Main pages
 import Index from "./pages/Index";
@@ -62,92 +62,94 @@ const App = () => {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <BrowserRouter>
-            <AuthProvider>
-              <Toaster />
-              <Sonner />
-              <div className="flex flex-col min-h-screen">
-                <div className="flex-grow">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    
-                    {/* Main navigation routes */}
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/services/:id" element={<ServiceDetail />} />
-                    <Route path="/freelancers" element={<Freelancers />} />
-                    <Route path="/freelancers/:id" element={<FreelancerProfile />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    
-                    {/* Projects routes */}
-                    <Route path="/projects/:id" element={<ProjectDetail />} />
-                    
-                    {/* Student/Freelancer Dashboard Routes - Protected */}
-                    <Route element={<ProtectedRoute userType="student" />}>
-                      <Route path="/student">
-                        <Route index element={<Dashboard />} />
-                        <Route path="projects" element={<Projects />} />
-                        <Route path="messages" element={<Messages />} />
-                        <Route path="calendar" element={<DashboardCalendar />} />
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="settings" element={<Settings />} />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <BrowserRouter>
+              <AuthProvider>
+                <Toaster />
+                <Sonner />
+                <div className="flex flex-col min-h-screen">
+                  <div className="flex-grow">
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      
+                      {/* Main navigation routes */}
+                      <Route path="/services" element={<Services />} />
+                      <Route path="/services/:id" element={<ServiceDetail />} />
+                      <Route path="/freelancers" element={<Freelancers />} />
+                      <Route path="/freelancers/:id" element={<FreelancerProfile />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/signup" element={<Signup />} />
+                      
+                      {/* Projects routes */}
+                      <Route path="/projects/:id" element={<ProjectDetail />} />
+                      
+                      {/* Student/Freelancer Dashboard Routes - Protected */}
+                      <Route element={<ProtectedRoute userType="student" />}>
+                        <Route path="/student">
+                          <Route index element={<Dashboard />} />
+                          <Route path="projects" element={<Projects />} />
+                          <Route path="messages" element={<Messages />} />
+                          <Route path="calendar" element={<DashboardCalendar />} />
+                          <Route path="profile" element={<Profile />} />
+                          <Route path="settings" element={<Settings />} />
+                        </Route>
                       </Route>
-                    </Route>
-                    
-                    {/* Legacy route redirects */}
-                    <Route path="/dashboard" element={<Navigate to="/student" replace />} />
-                    <Route path="/dashboard/projects" element={<Navigate to="/student/projects" replace />} />
-                    <Route path="/dashboard/messages" element={<Navigate to="/student/messages" replace />} />
-                    <Route path="/dashboard/calendar" element={<Navigate to="/student/calendar" replace />} />
-                    <Route path="/dashboard/profile" element={<Navigate to="/student/profile" replace />} />
-                    <Route path="/dashboard/settings" element={<Navigate to="/student/settings" replace />} />
-                    
-                    {/* Client Dashboard Routes - Protected */}
-                    <Route element={<ProtectedRoute userType="client" />}>
-                      <Route path="/client">
-                        <Route index element={<ClientDashboard />} />
-                        <Route path="projects" element={<Projects />} />
-                        <Route path="messages" element={<Messages />} />
-                        <Route path="calendar" element={<DashboardCalendar />} />
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="settings" element={<Settings />} />
+                      
+                      {/* Legacy route redirects */}
+                      <Route path="/dashboard" element={<Navigate to="/student" replace />} />
+                      <Route path="/dashboard/projects" element={<Navigate to="/student/projects" replace />} />
+                      <Route path="/dashboard/messages" element={<Navigate to="/student/messages" replace />} />
+                      <Route path="/dashboard/calendar" element={<Navigate to="/student/calendar" replace />} />
+                      <Route path="/dashboard/profile" element={<Navigate to="/student/profile" replace />} />
+                      <Route path="/dashboard/settings" element={<Navigate to="/student/settings" replace />} />
+                      
+                      {/* Client Dashboard Routes - Protected */}
+                      <Route element={<ProtectedRoute userType="client" />}>
+                        <Route path="/client">
+                          <Route index element={<ClientDashboard />} />
+                          <Route path="projects" element={<Projects />} />
+                          <Route path="messages" element={<Messages />} />
+                          <Route path="calendar" element={<DashboardCalendar />} />
+                          <Route path="profile" element={<Profile />} />
+                          <Route path="settings" element={<Settings />} />
+                        </Route>
                       </Route>
-                    </Route>
-                    
-                    {/* Legacy client dashboard redirect */}
-                    <Route path="/dashboard/client" element={<Navigate to="/client" replace />} />
-                    
-                    {/* Student section routes */}
-                    <Route path="/students/find-work" element={<FindWork />} />
-                    <Route path="/students/create-profile" element={<CreateProfile />} />
-                    <Route path="/students/resources" element={<Resources />} />
-                    <Route path="/students/success-stories" element={<SuccessStories />} />
-                    
-                    {/* Client section routes */}
-                    <Route path="/clients/post-project" element={<PostProject />} />
-                    <Route path="/clients/find-talent" element={<FindTalent />} />
-                    <Route path="/clients/enterprise" element={<Enterprise />} />
-                    <Route path="/clients/success-stories" element={<ClientSuccessStories />} />
-                    
-                    {/* Company section routes */}
-                    <Route path="/company/careers" element={<Careers />} />
-                    <Route path="/company/blog" element={<Blog />} />
-                    <Route path="/company/contact" element={<Contact />} />
-                    
-                    {/* Legal pages */}
-                    <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/legal/terms-of-service" element={<TermsOfService />} />
-                    <Route path="/legal/cookie-policy" element={<CookiePolicy />} />
-                    
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                      
+                      {/* Legacy client dashboard redirect */}
+                      <Route path="/dashboard/client" element={<Navigate to="/client" replace />} />
+                      
+                      {/* Student section routes */}
+                      <Route path="/students/find-work" element={<FindWork />} />
+                      <Route path="/students/create-profile" element={<CreateProfile />} />
+                      <Route path="/students/resources" element={<Resources />} />
+                      <Route path="/students/success-stories" element={<SuccessStories />} />
+                      
+                      {/* Client section routes */}
+                      <Route path="/clients/post-project" element={<PostProject />} />
+                      <Route path="/clients/find-talent" element={<FindTalent />} />
+                      <Route path="/clients/enterprise" element={<Enterprise />} />
+                      <Route path="/clients/success-stories" element={<ClientSuccessStories />} />
+                      
+                      {/* Company section routes */}
+                      <Route path="/company/careers" element={<Careers />} />
+                      <Route path="/company/blog" element={<Blog />} />
+                      <Route path="/company/contact" element={<Contact />} />
+                      
+                      {/* Legal pages */}
+                      <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
+                      <Route path="/legal/terms-of-service" element={<TermsOfService />} />
+                      <Route path="/legal/cookie-policy" element={<CookiePolicy />} />
+                      
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </div>
+                  <Footer />
                 </div>
-                <Footer />
-              </div>
-            </AuthProvider>
-          </BrowserRouter>
+              </AuthProvider>
+            </BrowserRouter>
+          </ThemeProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </StrictMode>

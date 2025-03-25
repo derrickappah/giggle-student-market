@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Button } from './ui/button';
+import { ThemeToggle } from './ThemeToggle';
 import { motion } from 'framer-motion';
 import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,7 +12,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from './ui/navigation-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from './ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
 
 const StudentLinks = () => (
@@ -384,6 +385,7 @@ const Header = () => {
           
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-3">
+            <ThemeToggle />
             {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

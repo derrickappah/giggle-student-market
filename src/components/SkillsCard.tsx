@@ -26,7 +26,7 @@ const SkillsCard = ({ skills, title, className = '' }: SkillsCardProps) => {
   };
 
   return (
-    <div className={`bg-card p-5 rounded-lg border ${className}`}>
+    <div className={`bg-card text-card-foreground p-5 rounded-lg border transition-colors ${className}`}>
       <h3 className="text-lg font-medium mb-3">{title}</h3>
       <motion.div 
         className="flex flex-wrap gap-2"
@@ -37,7 +37,7 @@ const SkillsCard = ({ skills, title, className = '' }: SkillsCardProps) => {
       >
         {skills.map((skill, index) => (
           <motion.div key={index} variants={item}>
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs dark:bg-secondary/80">
               {skill}
             </Badge>
           </motion.div>

@@ -53,7 +53,7 @@ const StudentStats = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.1 }}
         >
-          <Card>
+          <Card className="transition-colors">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
