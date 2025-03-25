@@ -10,8 +10,10 @@ import Hero from '@/components/Hero';
 import CategoryTabs from '@/components/CategoryTabs';
 import SearchProjects from '@/components/SearchProjects';
 import TrendingProjects from '@/components/TrendingProjects';
+import RecommendedProjects from '@/components/RecommendedProjects';
 import FeaturedFreelancers from '@/components/FeaturedFreelancers';
 import ServiceCard, { ServiceCardProps } from '@/components/ServiceCard';
+import SkillsCard from '@/components/SkillsCard';
 
 // Sample data for services
 const services: ServiceCardProps[] = [
@@ -101,6 +103,14 @@ const services: ServiceCardProps[] = [
   },
 ];
 
+// Sample popular skills data
+const popularSkills = {
+  design: ['UI/UX Design', 'Graphic Design', 'Logo Design', 'Illustration', 'Photoshop', 'Figma', 'Adobe XD', 'Branding'],
+  programming: ['React', 'JavaScript', 'Python', 'Node.js', 'Flutter', 'WordPress', 'HTML/CSS', 'TypeScript'],
+  writing: ['Content Writing', 'Copywriting', 'Technical Writing', 'Research Papers', 'Editing', 'Translation', 'SEO Writing'],
+  marketing: ['Social Media', 'Digital Marketing', 'SEO', 'Email Marketing', 'Market Research', 'Google Ads', 'Analytics']
+};
+
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState('all');
 
@@ -116,8 +126,48 @@ const Index = () => {
       {/* Search Projects Section */}
       <SearchProjects />
       
+      {/* Recommended Projects (New Section) */}
+      <RecommendedProjects />
+      
       {/* Trending Projects Section */}
       <TrendingProjects />
+      
+      {/* Popular Skills Section (New) */}
+      <section className="py-16 px-4 bg-secondary/5">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl font-bold mb-3">Popular Skills in Demand</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Discover the most sought-after skills by clients in our marketplace
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <SkillsCard 
+              title="Design & Creative" 
+              skills={popularSkills.design}
+            />
+            <SkillsCard 
+              title="Programming & Development" 
+              skills={popularSkills.programming}
+            />
+            <SkillsCard 
+              title="Writing & Translation" 
+              skills={popularSkills.writing}
+            />
+            <SkillsCard 
+              title="Marketing" 
+              skills={popularSkills.marketing}
+            />
+          </div>
+        </div>
+      </section>
       
       {/* Popular Services Section */}
       <section className="py-20 px-4 bg-secondary/10">
@@ -129,8 +179,8 @@ const Index = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="h2 mb-3">Explore Student Services</h2>
-            <p className="text-foreground/70 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold mb-3">Explore Student Services</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Discover a wide range of high-quality services offered by talented university students
             </p>
           </motion.div>
@@ -158,10 +208,10 @@ const Index = () => {
             <Link to="/services">
               <Button 
                 variant="outline" 
-                className="rounded-full"
+                className="rounded-full group"
               >
                 View All Services
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>
