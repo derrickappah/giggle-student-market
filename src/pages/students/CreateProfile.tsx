@@ -37,7 +37,7 @@ const CreateProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [previewSkills, setPreviewSkills] = useState<string[]>([]);
   
-  // If profile already exists, redirect to dashboard
+  // If profile already exists with bio, redirect to dashboard
   useEffect(() => {
     if (profile && profile.bio) {
       navigate('/student');
@@ -47,7 +47,7 @@ const CreateProfile = () => {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      fullName: profile?.first_name || "",
+      fullName: profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}`.trim() : "",
       university: profile?.university || "",
       course: "",
       skills: "",
@@ -84,7 +84,10 @@ const CreateProfile = () => {
     }
     
     setIsLoading(true);
+    
     try {
+      console.log("Starting profile creation with values:", values);
+      
       // Split the full name into first and last name
       const nameParts = values.fullName.split(' ');
       const firstName = nameParts[0] || '';
@@ -97,8 +100,16 @@ const CreateProfile = () => {
       const userDetails = {
         course: values.course,
         skills: skillsArray,
-        hourlyRate: values.hourlyRate
+        hourly_rate: parseFloat(values.hourlyRate)
       };
+      
+      console.log("Prepared profile data:", {
+        first_name: firstName,
+        last_name: lastName,
+        university: values.university,
+        bio: values.bio,
+        user_details: userDetails
+      });
       
       // Update the profile in Supabase using the updateProfile function from AuthContext
       const { error } = await updateProfile({
@@ -109,14 +120,23 @@ const CreateProfile = () => {
         user_details: userDetails
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error response from updateProfile:", error);
+        throw error;
+      }
+      
+      console.log("Profile created successfully!");
       
       toast({
         title: "Profile created!",
         description: "Your profile has been created successfully."
       });
       
-      navigate("/student");
+      // Short delay to ensure profile is saved before redirecting
+      setTimeout(() => {
+        navigate("/student");
+      }, 500);
+      
     } catch (error: any) {
       console.error("Error saving profile:", error);
       toast({

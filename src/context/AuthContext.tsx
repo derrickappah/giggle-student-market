@@ -67,17 +67,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchProfile = async (userId: string) => {
     try {
+      console.log('Fetching profile for user:', userId);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching profile:', error);
         return;
       }
       
+      console.log('Profile data fetched:', data);
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -131,24 +133,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateProfile = async (profileData: any) => {
     if (!user) {
+      console.error('No user found for profile update');
       return { 
         error: { message: "User not authenticated" },
         data: null
       };
     }
     
+    console.log('Updating profile with data:', profileData);
+    
     try {
       const { data, error } = await supabase
         .from('profiles')
         .update(profileData)
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .select();
       
-      if (!error) {
-        // Update the local profile state with the new data
-        setProfile(prevProfile => ({ ...prevProfile, ...profileData }));
+      if (error) {
+        console.error('Error updating profile:', error);
+        return { data: null, error };
       }
       
-      return { data, error };
+      console.log('Profile updated successfully:', data);
+      
+      // Update the local profile state with the new data
+      if (data && data.length > 0) {
+        setProfile({...profile, ...profileData});
+      }
+      
+      return { data, error: null };
     } catch (error) {
       console.error('Error updating profile:', error);
       return { data: null, error };
