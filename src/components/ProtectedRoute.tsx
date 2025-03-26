@@ -1,16 +1,18 @@
 
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 interface ProtectedRouteProps {
   userType?: 'student' | 'client';
+  children: React.ReactNode;
 }
 
-const ProtectedRoute = ({ userType }: ProtectedRouteProps) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ userType, children }) => {
   const { user, profile, isLoading } = useAuth();
   const location = useLocation();
 
-  // Show loading state or splash screen
+  // Show loading state
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -34,7 +36,7 @@ const ProtectedRoute = ({ userType }: ProtectedRouteProps) => {
     return <Navigate to="/student" replace />;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
