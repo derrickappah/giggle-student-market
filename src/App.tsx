@@ -15,18 +15,20 @@ import PostProject from './pages/clients/PostProject';
 import NotFound from './pages/NotFound';
 import SuccessStories from './pages/students/SuccessStories';
 import { BrowserRouter } from 'react-router-dom';
+import Services from './pages/Services';
 
 function App() {
   return (
-    <BrowserRouter>
-      <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-        <AuthProvider>
+    <ThemeProvider defaultTheme="light" storageKey="ui-theme">
+      <AuthProvider>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth-callback" element={<AuthCallback />} />
             <Route path="/students/success-stories" element={<SuccessStories />} />
+            <Route path="/services" element={<Services />} />
             
             {/* Protected Routes */}
             <Route 
@@ -73,9 +75,9 @@ function App() {
             {/* 404 Route - Must be last */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

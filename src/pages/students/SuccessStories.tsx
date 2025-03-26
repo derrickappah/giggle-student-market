@@ -2,62 +2,32 @@
 import React from 'react';
 import PageLayout from '@/components/PageLayout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 
-const testimonials = [
+const successStories = [
   {
-    name: "Alex Chen",
-    role: "Graphic Design Student",
-    university: "California Institute of the Arts",
-    avatar: "AC",
-    quote: "UniTalent helped me land my first design clients while still in my second year. I've been able to build a portfolio of real client work and earn enough to cover my living expenses.",
-    achievement: "Now works with 3 regular clients and has earned over $5,000 in 6 months"
+    id: 1,
+    name: "Alex Johnson",
+    university: "University of Technology",
+    avatar: "/placeholder.svg",
+    story: "I found my first freelance web development project through Campus Connect during my second year. That experience led to three more projects and eventually a full-time job offer after graduation.",
+    project: "E-commerce Website Development"
   },
   {
-    name: "Priya Sharma",
-    role: "Computer Science Major",
-    university: "University of Michigan",
-    avatar: "PS",
-    quote: "I was looking for ways to apply my coding skills to real-world projects. Through UniTalent, I've worked on web development projects that have solidified my knowledge and helped me decide my specialization.",
-    achievement: "Secured a summer internship based on her freelance portfolio"
+    id: 2,
+    name: "Samira Khan",
+    university: "State University",
+    avatar: "/placeholder.svg",
+    story: "As a design student, I was struggling to find relevant work experience. Through Campus Connect, I connected with a startup that needed branding work. That portfolio piece helped me land multiple clients afterward.",
+    project: "Brand Identity Design"
   },
   {
-    name: "Marcus Johnson",
-    role: "Marketing Student",
-    university: "NYU Stern",
-    avatar: "MJ",
-    quote: "As a marketing student, I needed practical experience beyond classroom theory. The social media campaigns I've managed through UniTalent have given me invaluable insights into what works in the real world.",
-    achievement: "Created a campaign that increased client's engagement by 230%"
-  },
-  {
-    name: "Emma Williams",
-    role: "Creative Writing Major",
-    university: "Columbia University",
-    avatar: "EW",
-    quote: "Finding writing opportunities as a student was challenging until I discovered UniTalent. I've been able to write content for various businesses while refining my craft.",
-    achievement: "Published writing portfolio led to a book deal with an independent publisher"
-  }
-];
-
-const featuredStories = [
-  {
-    name: "James Wilson",
-    title: "From Campus Project to Startup Success",
-    description: "Computer science student turned a university project into a thriving business through connections made on UniTalent",
-    image: "JW"
-  },
-  {
-    name: "Sophia Garcia",
-    title: "International Student Builds Global Client Base",
-    description: "How Sophia leveraged UniTalent to connect with clients worldwide while studying abroad",
-    image: "SG"
-  },
-  {
-    name: "Noah Kim",
-    title: "Paying Off Student Loans Before Graduation",
-    description: "Noah's strategic approach to freelancing allowed him to graduate debt-free",
-    image: "NK"
+    id: 3,
+    name: "Marcus Williams",
+    university: "Arts Institute",
+    avatar: "/placeholder.svg",
+    story: "I earned enough through Campus Connect projects to pay for my final semester of university. The client relationships I built during that time turned into long-term contracts after graduation.",
+    project: "Social Media Marketing Campaign"
   }
 ];
 
@@ -65,65 +35,43 @@ const SuccessStories = () => {
   return (
     <PageLayout
       title="Success Stories"
-      description="Meet students who have transformed their university experience through freelancing"
+      description="Real experiences from students who found opportunities through our platform"
     >
-      <Tabs defaultValue="testimonials" className="max-w-5xl mx-auto">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="testimonials">Student Testimonials</TabsTrigger>
-          <TabsTrigger value="featured">Featured Stories</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="testimonials">
-          <div className="grid md:grid-cols-2 gap-6">
-            {testimonials.map((testimonial, i) => (
-              <Card key={i} className="bg-secondary/50">
-                <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                  <Avatar>
-                    <AvatarFallback>{testimonial.avatar}</AvatarFallback>
+      <div className="max-w-5xl mx-auto">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
+          {successStories.map((story) => (
+            <Card key={story.id} className="h-full flex flex-col">
+              <CardContent className="pt-6 flex-grow">
+                <div className="flex items-center gap-4 mb-4">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={story.avatar} alt={story.name} />
+                    <AvatarFallback>{story.name.substring(0, 2)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="font-semibold">{testimonial.name}</h3>
-                    <CardDescription>{testimonial.role}</CardDescription>
-                    <CardDescription>{testimonial.university}</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <blockquote className="border-l-4 border-primary/50 pl-4 italic mb-4">
-                    "{testimonial.quote}"
-                  </blockquote>
-                  <div className="text-sm font-medium text-primary">
-                    Achievement: {testimonial.achievement}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="featured">
-          <div className="space-y-8">
-            {featuredStories.map((story, i) => (
-              <Card key={i} className="overflow-hidden">
-                <div className="md:flex">
-                  <div className="md:w-1/3 bg-secondary flex items-center justify-center p-10">
-                    <Avatar className="h-24 w-24">
-                      <AvatarFallback className="text-2xl">{story.image}</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="md:w-2/3 p-6">
-                    <h3 className="text-xl font-semibold mb-2">{story.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{story.name}</p>
-                    <p>{story.description}</p>
-                    <button className="text-primary hover:underline mt-4 text-sm font-medium">
-                      Read full story →
-                    </button>
+                    <h3 className="font-semibold">{story.name}</h3>
+                    <p className="text-sm text-muted-foreground">{story.university}</p>
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+                <div className="mb-3 bg-secondary text-secondary-foreground px-3 py-1 text-xs rounded-full inline-block">
+                  {story.project}
+                </div>
+                <p className="text-muted-foreground italic">"{story.story}"</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="bg-primary/5 rounded-lg p-8 text-center mb-12">
+          <h2 className="text-2xl font-bold mb-4">Share Your Success Story</h2>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Have you found success through our platform? We'd love to hear about your experience
+            and share it with the community to inspire other students.
+          </p>
+          <a href="mailto:stories@campusconnect.com" className="text-primary underline">
+            Send us your story
+          </a>
+        </div>
+      </div>
     </PageLayout>
   );
 };
