@@ -18,6 +18,8 @@ import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import { useAuth } from "@/context/AuthContext";
+import { Github, Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 const formSchema = z
   .object({
@@ -36,7 +38,8 @@ const formSchema = z
 const Signup = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { signUp, user } = useAuth();
+  const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const { signUp, signInWithGoogle, signInWithGitHub, user } = useAuth();
 
   // Redirect if already logged in
   if (user) {
@@ -89,6 +92,36 @@ const Signup = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setSocialLoading('google');
+      await signInWithGoogle();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Google signup failed",
+        description: error.message || "An error occurred during Google signup",
+      });
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    try {
+      setSocialLoading('github');
+      await signInWithGitHub();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "GitHub signup failed",
+        description: error.message || "An error occurred during GitHub signup",
+      });
+    } finally {
+      setSocialLoading(null);
     }
   };
 
@@ -211,7 +244,12 @@ const Signup = () => {
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account...
+                  </>
+                ) : "Create account"}
               </Button>
             </form>
           </Form>
@@ -231,24 +269,28 @@ const Signup = () => {
                 variant="outline"
                 type="button"
                 className="w-full"
-                onClick={() => {
-                  toast({
-                    description: "Social signup not implemented yet",
-                  });
-                }}
+                onClick={handleGoogleSignIn}
+                disabled={!!socialLoading}
               >
+                {socialLoading === 'google' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <FcGoogle className="h-5 w-5 mr-2" />
+                )}
                 Google
               </Button>
               <Button
                 variant="outline"
                 type="button"
                 className="w-full"
-                onClick={() => {
-                  toast({
-                    description: "Social signup not implemented yet",
-                  });
-                }}
+                onClick={handleGithubSignIn}
+                disabled={!!socialLoading}
               >
+                {socialLoading === 'github' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Github className="h-5 w-5 mr-2" />
+                )}
                 GitHub
               </Button>
             </div>

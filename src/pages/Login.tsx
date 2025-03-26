@@ -25,6 +25,8 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
+import { Github, Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 // Form schema for validation
 const formSchema = z.object({
@@ -36,7 +38,8 @@ const formSchema = z.object({
 const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, user } = useAuth();
+  const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const { signIn, signInWithGoogle, signInWithGitHub, user } = useAuth();
 
   // Redirect if already logged in
   if (user) {
@@ -87,6 +90,36 @@ const Login = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setSocialLoading('google');
+      await signInWithGoogle();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Google login failed",
+        description: error.message || "An error occurred during Google login",
+      });
+    } finally {
+      setSocialLoading(null);
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    try {
+      setSocialLoading('github');
+      await signInWithGitHub();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "GitHub login failed",
+        description: error.message || "An error occurred during GitHub login",
+      });
+    } finally {
+      setSocialLoading(null);
     }
   };
 
@@ -148,7 +181,6 @@ const Login = () => {
                         type="email" 
                         placeholder="you@example.com" 
                         {...field} 
-                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                       />
                     </FormControl>
                     <FormMessage />
@@ -167,7 +199,6 @@ const Login = () => {
                         type="password" 
                         placeholder="••••••••" 
                         {...field} 
-                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                       />
                     </FormControl>
                     <FormMessage />
@@ -188,7 +219,12 @@ const Login = () => {
                 className="group relative w-full"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : "Sign in"}
               </Button>
             </form>
           </Form>
@@ -208,24 +244,28 @@ const Login = () => {
                 variant="outline"
                 type="button"
                 className="w-full"
-                onClick={() => {
-                  toast({
-                    description: "Social login not implemented yet",
-                  });
-                }}
+                onClick={handleGoogleSignIn}
+                disabled={!!socialLoading}
               >
+                {socialLoading === 'google' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <FcGoogle className="h-5 w-5 mr-2" />
+                )}
                 Google
               </Button>
               <Button
                 variant="outline"
                 type="button"
                 className="w-full"
-                onClick={() => {
-                  toast({
-                    description: "Social login not implemented yet",
-                  });
-                }}
+                onClick={handleGithubSignIn}
+                disabled={!!socialLoading}
               >
+                {socialLoading === 'github' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Github className="h-5 w-5 mr-2" />
+                )}
                 GitHub
               </Button>
             </div>

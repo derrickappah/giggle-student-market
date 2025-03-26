@@ -24,6 +24,8 @@ type AuthContextType = {
     error: any | null;
     data: any | null;
   }>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithGitHub: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -176,6 +178,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return profile?.user_type === 'client';
   };
 
+  // New methods for social logins
+  const signInWithGoogle = async () => {
+    try {
+      console.log('Signing in with Google...');
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth-callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+      
+      if (error) {
+        console.error('Error signing in with Google:', error);
+        throw error;
+      }
+      
+      // Auth state change listener will handle the session update
+    } catch (error) {
+      console.error('Error in Google sign in:', error);
+    }
+  };
+
+  const signInWithGitHub = async () => {
+    try {
+      console.log('Signing in with GitHub...');
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}/auth-callback`,
+        },
+      });
+      
+      if (error) {
+        console.error('Error signing in with GitHub:', error);
+        throw error;
+      }
+      
+      // Auth state change listener will handle the session update
+    } catch (error) {
+      console.error('Error in GitHub sign in:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -188,7 +237,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signOut,
         isStudent,
         isClient,
-        updateProfile
+        updateProfile,
+        signInWithGoogle,
+        signInWithGitHub
       }}
     >
       {children}
