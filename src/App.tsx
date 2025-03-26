@@ -13,6 +13,7 @@ import ClientDashboard from './pages/dashboard/ClientDashboard';
 import FindWork from './pages/students/FindWork';
 import PostProject from './pages/clients/PostProject';
 import NotFound from './pages/NotFound';
+import SuccessStories from './pages/students/SuccessStories';
 import { BrowserRouter } from 'react-router-dom';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth-callback" element={<AuthCallback />} />
+            <Route path="/students/success-stories" element={<SuccessStories />} />
             
             {/* Protected Routes */}
             <Route 
