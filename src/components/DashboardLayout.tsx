@@ -24,11 +24,11 @@ const DashboardLayout = ({ title, description, children, userType = 'student' }:
   
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: basePath },
-    { icon: User, label: 'Profile', path: `${basePath}/profile` },
-    { icon: FileText, label: 'Projects', path: `${basePath}/projects` },
-    { icon: MessageSquare, label: 'Messages', path: `${basePath}/messages` },
-    { icon: Calendar, label: 'Calendar', path: `${basePath}/calendar` },
-    { icon: Settings, label: 'Settings', path: `${basePath}/settings` },
+    { icon: User, label: 'Profile', path: '/dashboard/profile' },
+    { icon: FileText, label: 'Projects', path: '/dashboard/projects' },
+    { icon: MessageSquare, label: 'Messages', path: '/dashboard/messages' },
+    { icon: Calendar, label: 'Calendar', path: '/dashboard/calendar' },
+    { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
   ];
   
   return (

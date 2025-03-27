@@ -26,7 +26,7 @@ const Profile = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Personal Information</h2>
-              <Link to={`/${userType}/edit-profile`}>
+              <Link to={`/${userType === 'student' ? 'students' : 'clients'}/edit-profile`}>
                 <Button variant="outline" size="sm">
                   <Edit className="mr-2 h-4 w-4" />
                   Edit Profile
