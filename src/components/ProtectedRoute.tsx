@@ -33,7 +33,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ userType, children }) =
       return <Navigate to="/client" replace />;
     }
     // Redirect student users to student dashboard
-    return <Navigate to="/student" replace />;
+    if (profile?.user_type === 'student') {
+      return <Navigate to="/student" replace />;
+    }
   }
 
   return <>{children}</>;

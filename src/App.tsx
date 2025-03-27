@@ -1,8 +1,7 @@
 
-import { Routes, Route, useRoutes } from 'react-router-dom';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/context/AuthContext';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useRoutes } from 'react-router-dom';
 import { routes } from './routes';
 
 function App() {

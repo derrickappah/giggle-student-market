@@ -15,8 +15,8 @@ import SuccessStories from './pages/students/SuccessStories';
 import Services from './pages/Services';
 
 // Helper to create protected routes
-const createProtectedRoute = (element: React.ReactNode) => {
-  return <ProtectedRoute>{element}</ProtectedRoute>;
+const createProtectedRoute = (element: React.ReactNode, userType?: 'student' | 'client') => {
+  return <ProtectedRoute userType={userType}>{element}</ProtectedRoute>;
 };
 
 export const routes: RouteObject[] = [
@@ -48,23 +48,23 @@ export const routes: RouteObject[] = [
   // Protected Routes
   {
     path: '/students/create-profile',
-    element: createProtectedRoute(<CreateProfile />)
+    element: createProtectedRoute(<CreateProfile />, 'student')
   },
   {
     path: '/student',
-    element: createProtectedRoute(<StudentDashboard />)
+    element: createProtectedRoute(<StudentDashboard />, 'student')
   },
   {
     path: '/client',
-    element: createProtectedRoute(<ClientDashboard />)
+    element: createProtectedRoute(<ClientDashboard />, 'client')
   },
   {
     path: '/students/find-work',
-    element: createProtectedRoute(<FindWork />)
+    element: createProtectedRoute(<FindWork />, 'student')
   },
   {
     path: '/clients/post-project',
-    element: createProtectedRoute(<PostProject />)
+    element: createProtectedRoute(<PostProject />, 'client')
   },
   
   // 404 Route - Must be last
