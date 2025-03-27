@@ -3,15 +3,21 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useThemeContext } from "./ThemeProvider";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { isDarkMode } = useThemeContext();
 
   // Avoid hydration mismatch by only rendering after mount
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const toggleTheme = () => {
+    setTheme(isDarkMode ? "light" : "dark");
+  };
 
   if (!mounted) {
     return <Button variant="ghost" size="icon" className="rounded-full opacity-0" aria-label="Loading theme toggle" />;
@@ -21,7 +27,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={toggleTheme}
       className="rounded-full"
       aria-label="Toggle theme"
     >

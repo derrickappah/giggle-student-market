@@ -5,11 +5,13 @@ import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from 'next-themes';
+import { useThemeContext } from '@/components/ThemeProvider';
 
 const Settings = () => {
   const { user, profile } = useAuth();
   const userType = profile?.user_type || 'student';
   const { theme } = useTheme();
+  const { isDarkMode } = useThemeContext();
   
   return (
     <DashboardLayout 
@@ -25,7 +27,7 @@ const Settings = () => {
               <div>
                 <p className="font-medium">Theme</p>
                 <p className="text-sm text-muted-foreground">
-                  Current theme: {theme === 'dark' ? 'Dark' : 'Light'}
+                  Current theme: {isDarkMode ? 'Dark' : 'Light'}
                 </p>
               </div>
               <ThemeToggle />

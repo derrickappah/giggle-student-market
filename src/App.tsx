@@ -8,18 +8,25 @@ import { routes } from './routes';
 function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider defaultTheme="system" enableSystem storageKey="ui-theme">
+      <ThemeProvider 
+        defaultTheme="system" 
+        enableSystem 
+        storageKey="ui-theme"
+        attribute="class" // This is important for Tailwind dark mode
+      >
         <AuthProvider>
-          <Routes>
-            {routes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-          <Toaster />
+          <div className="min-h-screen bg-background text-foreground">
+            <Routes>
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+            <Toaster />
+          </div>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,6 +68,13 @@
     --ring: 216 34% 17%;
  
     --radius: 0.5rem;
+
+    /* Sidebar specific colors for dark mode */
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-border: 216 34% 17%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 47.4% 1.2%;
   }
 }
 
@@ -75,7 +83,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1, .h1 {
@@ -91,7 +99,7 @@
     @apply text-lg leading-relaxed;
   }
   .glass {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl;
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl dark:bg-black/10 dark:border-black/20;
   }
   .tag {
     @apply inline-block text-xs bg-secondary/50 px-2 py-0.5 rounded-full;
