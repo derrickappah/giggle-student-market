@@ -1,79 +1,90 @@
 
-import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
-import { BarChart3, Briefcase, FileText, Calendar, User, Settings } from "lucide-react";
-import Header from "./Header";
-import { useAuth } from "@/context/AuthContext";
+import React, { ReactNode } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { motion } from 'framer-motion';
+import { Home, User, FileText, MessageSquare, Settings, Calendar, LogOut } from 'lucide-react';
+import { Button } from './ui/button';
+import { ThemeToggle } from './ThemeToggle';
+import Footer from './Footer';
 
 interface DashboardLayoutProps {
   title: string;
   description?: string;
   children: ReactNode;
-  userType?: "student" | "client";
+  userType?: 'student' | 'client';
 }
 
-const DashboardLayout = ({ 
-  title, 
-  description, 
-  children, 
-  userType = "student" 
-}: DashboardLayoutProps) => {
+const DashboardLayout = ({ title, description, children, userType = 'student' }: DashboardLayoutProps) => {
+  const { signOut } = useAuth();
   const location = useLocation();
-  const { profile } = useAuth();
-  const actualUserType = profile?.user_type || userType;
-  const basePath = actualUserType === "client" ? "/client" : "/student";
   
-  const navItems = [
-    { path: `${basePath}`, icon: <BarChart3 className="h-5 w-5" />, label: "Overview" },
-    { path: `${basePath}/projects`, icon: <Briefcase className="h-5 w-5" />, label: "My Projects" },
-    { path: `${basePath}/messages`, icon: <FileText className="h-5 w-5" />, label: "Messages" },
-    { path: `${basePath}/calendar`, icon: <Calendar className="h-5 w-5" />, label: "Calendar" },
-    { path: `${basePath}/profile`, icon: <User className="h-5 w-5" />, label: "Profile" },
-    { path: `${basePath}/settings`, icon: <Settings className="h-5 w-5" />, label: "Settings" },
+  const isActive = (path: string) => location.pathname === path;
+  const basePath = userType === 'client' ? '/client' : '/student';
+  
+  const menuItems = [
+    { icon: Home, label: 'Dashboard', path: basePath },
+    { icon: User, label: 'Profile', path: `${basePath}/profile` },
+    { icon: FileText, label: 'Projects', path: `${basePath}/projects` },
+    { icon: MessageSquare, label: 'Messages', path: `${basePath}/messages` },
+    { icon: Calendar, label: 'Calendar', path: `${basePath}/calendar` },
+    { icon: Settings, label: 'Settings', path: `${basePath}/settings` },
   ];
-
+  
   return (
-    <>
-      <Header />
-      <main className="min-h-[calc(100vh-80px-300px)] bg-background">
-        <div className="container mx-auto px-4 py-16">
-          <div className="mb-10">
-            <h1 className="text-4xl font-bold mb-4">{title}</h1>
-            {description && <p className="text-lg text-muted-foreground max-w-3xl">{description}</p>}
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* Dashboard navigation */}
-            <Card className="md:col-span-1 h-fit">
-              <CardContent className="p-0">
-                <nav className="flex flex-col">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      className={`flex items-center gap-3 p-4 ${
-                        location.pathname === item.path
-                          ? "text-primary bg-primary/10 font-medium"
-                          : "text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
-            
-            {/* Main content area */}
-            <div className="md:col-span-3">
-              {children}
-            </div>
+    <div className="flex flex-col min-h-screen">
+      <div className="bg-background/80 backdrop-blur-md py-4 px-4 sticky top-0 z-50 border-b border-border/50">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link to="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+            UniTalent
+          </Link>
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <Button variant="outline" size="sm" onClick={signOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </Button>
           </div>
         </div>
-      </main>
-    </>
+      </div>
+
+      <div className="flex-1 container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+        <aside className="w-full md:w-64 shrink-0">
+          <div className="sticky top-24 bg-card rounded-lg border p-4 shadow-sm">
+            <nav className="space-y-2">
+              {menuItems.map((item) => (
+                <Link key={item.path} to={item.path}>
+                  <Button
+                    variant={isActive(item.path) ? "default" : "ghost"}
+                    className="w-full justify-start"
+                  >
+                    <item.icon className="mr-2 h-4 w-4" />
+                    {item.label}
+                  </Button>
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </aside>
+        
+        <main className="flex-1">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold">{title}</h1>
+            {description && <p className="text-muted-foreground mt-2">{description}</p>}
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.div>
+        </main>
+      </div>
+      
+      <Footer />
+    </div>
   );
 };
 

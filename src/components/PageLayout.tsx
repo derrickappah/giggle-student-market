@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Header from './Header';
+import Footer from './Footer';
 
 interface PageLayoutProps {
   title: string;
@@ -21,6 +22,7 @@ const PageLayout = ({ title, description, children }: PageLayoutProps) => {
           {children}
         </div>
       </main>
+      <Footer />
     </>
   );
 };

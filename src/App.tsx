@@ -2,6 +2,7 @@
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/context/AuthContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
 import { routes } from './routes';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
               />
             ))}
           </Routes>
+          <Toaster />
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>

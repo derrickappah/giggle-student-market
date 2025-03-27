@@ -41,12 +41,12 @@ const StudentDashboard = () => {
                   Find Work
                 </Button>
               </Link>
-              <Link to="/student/projects">
+              <Link to="/dashboard/projects">
                 <Button variant="outline" className="w-full justify-start">
                   My Projects
                 </Button>
               </Link>
-              <Link to="/student/messages">
+              <Link to="/dashboard/messages">
                 <Button variant="outline" className="w-full justify-start">
                   Messages
                 </Button>
