@@ -1,14 +1,14 @@
 
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/context/AuthContext';
-import { BrowserRouter, Routes, Route, useRoutes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routes } from './routes';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-      <AuthProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
           <Routes>
             {routes.map((route) => (
               <Route
@@ -18,8 +18,8 @@ function App() {
               />
             ))}
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
