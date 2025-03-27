@@ -4,10 +4,12 @@ import DashboardLayout from '@/components/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useTheme } from 'next-themes';
 
 const Settings = () => {
   const { user, profile } = useAuth();
   const userType = profile?.user_type || 'student';
+  const { theme } = useTheme();
   
   return (
     <DashboardLayout 
@@ -22,7 +24,9 @@ const Settings = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Theme</p>
-                <p className="text-sm text-muted-foreground">Toggle between light and dark mode</p>
+                <p className="text-sm text-muted-foreground">
+                  Current theme: {theme === 'dark' ? 'Dark' : 'Light'}
+                </p>
               </div>
               <ThemeToggle />
             </div>

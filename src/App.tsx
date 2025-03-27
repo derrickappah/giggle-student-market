@@ -7,8 +7,8 @@ import { routes } from './routes';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-      <BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider defaultTheme="system" enableSystem storageKey="ui-theme">
         <AuthProvider>
           <Routes>
             {routes.map((route) => (
@@ -21,8 +21,8 @@ function App() {
           </Routes>
           <Toaster />
         </AuthProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

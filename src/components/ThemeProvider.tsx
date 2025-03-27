@@ -6,13 +6,14 @@ import { type ThemeProviderProps } from "next-themes/dist/types";
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);
 
-  // Avoid hydration mismatch by only rendering after mount
+  // Ensure hydration completes before rendering to avoid UI flicker
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // During initial rendering, render a simple container to avoid layout shift
   if (!mounted) {
-    return <>{children}</>;
+    return <div className="h-full">{children}</div>;
   }
 
   return (
